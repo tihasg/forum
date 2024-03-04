@@ -3,7 +3,7 @@ package br.tihasg.com.foru.model
 import java.time.LocalDateTime
 
 data class Topico(
-        val id: Long? =null,
+        var id: Long? =null,
         val title: String,
         val msg: String,
         val dataCriacao: LocalDateTime = LocalDateTime.now(),
