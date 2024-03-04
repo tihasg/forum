@@ -1,6 +1,6 @@
 package br.tihasg.com.foru.dto
 
-data class TopicoDto(
+data class TopicoForm(
         val title: String,
         val msg: String,
         val autor: Long,
