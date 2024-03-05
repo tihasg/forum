@@ -1,7 +1,8 @@
 package br.tihasg.com.foru.service
 
-import br.tihasg.com.foru.dto.TopicoForm
+import br.tihasg.com.foru.dto.NovoTopicoForm
 import br.tihasg.com.foru.dto.TopicoView
+import br.tihasg.com.foru.dto.UpdateTopicoForm
 import br.tihasg.com.foru.mapper.TopicoFormMapper
 import br.tihasg.com.foru.mapper.TopicoViewMapper
 import br.tihasg.com.foru.model.Topico
@@ -28,9 +29,26 @@ class TopicoService(
         return topicoViewMapper.map(topico)
     }
 
-    fun cadastrar(dto: TopicoForm) {
+    fun cadastrar(dto: NovoTopicoForm) {
         val topico = topicoFormMapper.map(dto)
         topico.id = topicos.size.toLong() + 1
         topicos = topicos.plus(topicoFormMapper.map(dto))
+    }
+
+    fun atualizar(dto: UpdateTopicoForm) {
+        val topico = topicos.stream().filter { t ->
+            t.id == dto.id
+        }.findFirst().get()
+
+        topicos = topicos.minus(topico).plus(Topico(
+                id = dto.id,
+                title = dto.title,
+                msg = dto.msg,
+                curso = topico.curso,
+                dataCriacao = topico.dataCriacao,
+                autor = topico.autor,
+                status = topico.status,
+                respsta = topico.respsta
+        ))
     }
 }
