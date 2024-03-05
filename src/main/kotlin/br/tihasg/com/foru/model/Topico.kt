@@ -1,14 +1,19 @@
 package br.tihasg.com.foru.model
 
+import jakarta.persistence.*
 import java.time.LocalDateTime
 
+@Entity
 data class Topico(
-        var id: Long? =null,
-        val title: String,
-        val msg: String,
+        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+        var id: Long? = null,
+        var title: String,
+        var msg: String,
         val dataCriacao: LocalDateTime = LocalDateTime.now(),
-        val curso: Curso,
+        @ManyToOne
+        val curso: Curso, @ManyToOne
         val autor: Usuario,
+        @Enumerated(value = EnumType.STRING)
         val status: StatusTopicos = StatusTopicos.NAO_RESPONDIDO,
-        val respsta: List<Resposta> = ArrayList()
-)
+        @OneToMany (mappedBy = "topico")
+        val respostas: List<Resposta> = ArrayList())
