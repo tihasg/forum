@@ -5,6 +5,7 @@ import br.tihasg.com.foru.dto.TopicoView
 import br.tihasg.com.foru.dto.UpdateTopicoForm
 import br.tihasg.com.foru.service.TopicoService
 import jakarta.validation.Valid
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -34,5 +35,10 @@ class TopicoController(private val service: TopicoService) {
     @PutMapping
     fun atualizar(@RequestBody @Valid dto: UpdateTopicoForm) {
         service.atualizar(dto)
+    }
+
+    @DeleteMapping("/{id}")
+    fun deletar(@PathVariable id: Long) {
+        service.delete(id)
     }
 }
