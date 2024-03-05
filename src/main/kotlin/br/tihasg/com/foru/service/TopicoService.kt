@@ -3,6 +3,7 @@ package br.tihasg.com.foru.service
 import br.tihasg.com.foru.dto.NovoTopicoForm
 import br.tihasg.com.foru.dto.TopicoView
 import br.tihasg.com.foru.dto.UpdateTopicoForm
+import br.tihasg.com.foru.exception.NotFoundException
 import br.tihasg.com.foru.mapper.TopicoFormMapper
 import br.tihasg.com.foru.mapper.TopicoViewMapper
 import br.tihasg.com.foru.model.Topico
@@ -25,21 +26,21 @@ class TopicoService(
     fun buscarPorId(id: Long): TopicoView {
         val topico = topicos.stream().filter { t ->
             t.id == id
-        }.findFirst().get()
+        }.findFirst().orElseThrow { NotFoundException("Topico nao encontrado") }
         return topicoViewMapper.map(topico)
     }
 
-    fun cadastrar(dto: NovoTopicoForm) : TopicoView{
+    fun cadastrar(dto: NovoTopicoForm): TopicoView {
         val topico = topicoFormMapper.map(dto)
         topico.id = topicos.size.toLong() + 1
         topicos = topicos.plus(topicoFormMapper.map(dto))
         return topicoViewMapper.map(topico)
     }
 
-    fun atualizar(dto: UpdateTopicoForm) : TopicoView {
+    fun atualizar(dto: UpdateTopicoForm): TopicoView {
         val topico = topicos.stream().filter { t ->
             t.id == dto.id
-        }.findFirst().get()
+        }.findFirst().orElseThrow { NotFoundException("Topico nao encontrado") }
 
         val novo = Topico(
                 id = dto.id,
@@ -59,7 +60,7 @@ class TopicoService(
     fun delete(id: Long) {
         val topico = topicos.stream().filter { t ->
             t.id == id
-        }.findFirst().get()
+        }.findFirst().orElseThrow { NotFoundException("Topico nao encontrado") }
 
         topicos = topicos.minus(topico)
     }
